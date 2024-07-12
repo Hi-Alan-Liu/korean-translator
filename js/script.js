@@ -34,7 +34,7 @@ function loadingComplete() {
         loadingElement.style.display = "none";
     }
 
-    $('#example').DataTable({
+    $('#koreanTable').DataTable({
         data: tableData,
         columns: [
             { data: 'type', title: '' },
@@ -42,11 +42,11 @@ function loadingComplete() {
             { data: 'ko', title: '韓文' },
             { 
                 data: null,
-                title: '',
+                title: '功能',
                 render: function(data, type, row) {
                     return `
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary btn-sm" onclick="speak('${row.ko}')">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="openKoreanModal('${row.tw}', '${row.ko}')">
                                 <i class="bi bi-play-fill"></i>
                             </button>
                         </div>
@@ -57,6 +57,7 @@ function loadingComplete() {
         ],
         pageLength: 10,
         paging: false,
+        info: false,
     });
 }
 
@@ -65,21 +66,38 @@ function speak(textToSpeak) {
         const synth = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(textToSpeak);
         utterance.lang = 'ko-KR';
-        
+
+        // Find the button element
+        const button = document.querySelector('#koreanModal .modal-body button');
+        const icon = button.querySelector('i');
+
         utterance.onboundary = (event) => {
             console.log('Speech boundary event');
         };
 
         utterance.onstart = function(event) {
             console.log("Speech synthesis started");
+            icon.classList.remove('bi-play-fill');
+            icon.classList.add('bi-pause-fill');
         };
 
         utterance.onend = function(event) {
             console.log("Speech synthesis ended");
+            icon.classList.remove('bi-pause-fill');
+            icon.classList.add('bi-play-fill');
         };
 
         synth.speak(utterance);
     } else {
         alert('No text to speak!');
     }
+}
+
+function openKoreanModal(chineseText, koreanText) {
+    const modal = new bootstrap.Modal(document.getElementById('koreanModal'));
+    document.getElementById('koreanModalLabel').innerText = '韓語翻譯';
+    document.querySelector('#koreanModal .modal-body h3:nth-of-type(1)').innerText = koreanText;
+    document.querySelector('#koreanModal .modal-body h3:nth-of-type(2)').innerText = chineseText;
+    document.querySelector('#koreanModal .modal-body button').setAttribute('onclick', `speak('${koreanText}')`);
+    modal.show();
 }
