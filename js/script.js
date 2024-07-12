@@ -70,6 +70,7 @@ function speak(textToSpeak) {
         // Find the button element
         const button = document.querySelector('#koreanModal .modal-body button');
         const icon = button.querySelector('i');
+        const buttonText = button.querySelector('span');
 
         utterance.onboundary = (event) => {
             console.log('Speech boundary event');
@@ -79,12 +80,14 @@ function speak(textToSpeak) {
             console.log("Speech synthesis started");
             icon.classList.remove('bi-play-fill');
             icon.classList.add('bi-pause-fill');
+            buttonText.textContent = ' Pause';
         };
 
         utterance.onend = function(event) {
             console.log("Speech synthesis ended");
             icon.classList.remove('bi-pause-fill');
             icon.classList.add('bi-play-fill');
+            buttonText.textContent = ' Play';
         };
 
         synth.speak(utterance);
@@ -96,8 +99,8 @@ function speak(textToSpeak) {
 function openKoreanModal(chineseText, koreanText) {
     const modal = new bootstrap.Modal(document.getElementById('koreanModal'));
     document.getElementById('koreanModalLabel').innerText = '韓語翻譯';
-    document.querySelector('#koreanModal .modal-body h3:nth-of-type(1)').innerText = koreanText;
-    document.querySelector('#koreanModal .modal-body h3:nth-of-type(2)').innerText = chineseText;
+    document.querySelector('#koreanModal .modal-body h1:nth-of-type(1)').innerText = koreanText;
+    document.querySelector('#koreanModal .modal-body h1:nth-of-type(2)').innerText = chineseText;
     document.querySelector('#koreanModal .modal-body button').setAttribute('onclick', `speak('${koreanText}')`);
     modal.show();
 }
