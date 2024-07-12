@@ -42,7 +42,7 @@ function loadingComplete() {
             { data: 'ko', title: '韓文' },
             { 
                 data: null,
-                title: '功能',
+                title: '',
                 render: function(data, type, row) {
                     return `
                         <div class="text-center">
@@ -98,7 +98,6 @@ function speak(textToSpeak) {
 
 function openKoreanModal(chineseText, koreanText) {
     const modal = new bootstrap.Modal(document.getElementById('koreanModal'));
-    document.getElementById('koreanModalLabel').innerText = '韓語翻譯';
     document.querySelector('#koreanModal .modal-body h1:nth-of-type(1)').innerText = koreanText;
     document.querySelector('#koreanModal .modal-body h1:nth-of-type(2)').innerText = chineseText;
     document.querySelector('#koreanModal .modal-body button').setAttribute('onclick', `speak('${koreanText}')`);
