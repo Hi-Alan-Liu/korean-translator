@@ -19,7 +19,20 @@
       <span class="sr-only">　載入中 ...</span>
     </div>
 
-    <h3 class="mt-5 text-center">實用韓語翻譯器</h3>
+    <div class="p-3">
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">篩選類別：</label>
+        <select id="typeSelect" class="form-control" aria-label="Type Filter">
+          <option value="">全部</option>
+        </select>
+      </div>
+      
+      <div class="mb-3">
+        <label for="searchInput" class="form-label">搜尋：</label>
+        <input type="text" class="form-control" id="searchInput" placeholder="輸入文字">
+      </div>
+    </div>
+
     <div class="my-3">
         <table id="koreanTable" class="display" style="width:100%">
             <thead>

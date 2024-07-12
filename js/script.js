@@ -23,7 +23,7 @@ async function getData() {
             {"type": "餐廳", "tw": "請給我菜單", "ko": "메뉴 주세요"},
             {"type": "餐廳", "tw": "請給我水", "ko": "물 주세요"},
             {"type": "餐廳", "tw": "請再加一點小菜", "ko": "반찬 더 주세요"},
-            {"type": "餐廳", "tw": "請幫我結帳", "ko": "계산 해주세요"}
+            {"type": "餐廳AAA", "tw": "請幫我結帳", "ko": "계산 해주세요"}
         ];
     }
 }
@@ -34,7 +34,7 @@ function loadingComplete() {
         loadingElement.style.display = "none";
     }
 
-    $('#koreanTable').DataTable({
+    const table = $('#koreanTable').DataTable({
         data: tableData,
         columns: [
             { data: 'type', title: '' },
@@ -56,8 +56,33 @@ function loadingComplete() {
             }
         ],
         pageLength: 10,
-        paging: false,
+        paging: true,
+        lengthChange: false,
         info: false,
+    });
+
+    $('#searchInput').on('keyup', function() {
+        table.search(this.value).draw();
+    });
+
+    $('#koreanTable_filter').hide();
+
+    $('#typeSelect').on('change', function() {
+        const selectedType = $(this).val();
+        if (selectedType) {
+            table.column(0).search('^' + selectedType + '$', true, false).draw();
+        } else {
+            table.column(0).search('').draw();
+        }
+    });
+
+    const uniqueTypes = Array.from(new Set(tableData.map(item => item.type)));
+    const selectElement = document.getElementById('typeSelect');
+    uniqueTypes.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = type;
+        selectElement.appendChild(option);
     });
 }
 
